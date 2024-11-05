@@ -1,0 +1,85 @@
+info:
+  contact: {}
+paths:
+  /files/{filename}:
+    delete:
+      description: Delete a file from MinIO by filename
+      parameters:
+      - description: File name
+        in: path
+        name: filename
+        required: true
+        type: string
+      responses:
+        "200":
+          description: File deleted successfully
+          schema:
+            type: string
+        "404":
+          description: File not found
+          schema:
+            type: string
+      summary: Delete file from MinIO
+    get:
+      description: Retrieve a file from MinIO by filename
+      parameters:
+      - description: File name
+        in: path
+        name: filename
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: File not found
+          schema:
+            type: string
+      summary: Get file from MinIO
+  /presigned/{filename}:
+    get:
+      description: Generate a pre-signed URL for an object in MinIO by filename
+      parameters:
+      - description: File name
+        in: path
+        name: filename
+        required: true
+        type: string
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Pre-signed URL
+          schema:
+            type: string
+      summary: Generate pre-signed URL for MinIO object
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload a file to the specified bucket
+      parameters:
+      - description: File to upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: File uploaded successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Upload file to MinIO
+swagger: "2.0"
